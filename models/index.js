@@ -1,26 +1,25 @@
-//DB connection
-const getDbConnection = () => {
-    return require("knex")({
-        client: "mysql",
-        connection: {
-            host: process.env.DB_HOST || "localhost",
-            port: process.env.DB_PORT || 3306,
-            user: process.env.DB_USER || "root",
-            password: process.env.DB_PASSWORD || "mysql",
-            database: process.env.DB_NAME || "resturang",
-        },
-    });
-};
+/**
+ *Db connection
+ */
 
-const getAll = () => {
-    return getDbConnection().select().from("reservations");
-};
+const knex = require("knex")({
+    client: "mysql",
+    connection: {
+        host: process.env.DB_HOST || "localhost",
+        port: process.env.DB_PORT || 3306,
+        user: process.env.DB_USER || "root",
+        password: process.env.DB_PASSWORD || "mysql",
+        database: process.env.DB_NAME || "resturang",
+    },
+});
 
-const store = (data) => {
-    return getDbConnection().insert(data).into("reservations");
-};
+const bookshelf = require("bookshelf")(knex);
+
+const models = {};
+models.Reservation = require("../models/reservation")(bookshelf);
+models.Reservation_time = require("../models/reservation_time")(bookshelf);
 
 module.exports = {
-    getAll,
-    store,
+    bookshelf,
+    ...models,
 };

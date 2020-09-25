@@ -1,21 +1,24 @@
-const { getAll, store } = require("../models/index");
+const { request } = require("express");
 
-const index = (req, res) => {
-    getAll().then((data) => {
-        res.send({
-            status: "success",
-            data,
-        });
+const models = require("../models");
+
+const index = async (req, res) => {
+    const data = await models.Reservation.fetchAll();
+    res.send({
+        status: "success",
+        data,
     });
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
     console.log("would you like to store a new coffee", req.body);
-    store(req.body).then(
-        res.send({
-            status: "success",
-        })
-    );
+
+    const booking = await new models.Reservation(req.body).save();
+    console.log("Created new booking successfully:", booking);
+
+    res.send({
+        status: "success",
+    });
 };
 
 module.exports = {
