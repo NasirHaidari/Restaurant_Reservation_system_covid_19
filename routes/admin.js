@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-
-
-router.get('/', index);
-
-
+router.post("/login", (req, res) => {
+    res.send({
+        status: "success",
+    });
+});
 
 module.exports = router;
