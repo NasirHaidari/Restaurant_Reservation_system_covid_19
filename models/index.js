@@ -16,8 +16,9 @@ const knex = require("knex")({
 const bookshelf = require("bookshelf")(knex);
 
 const models = {};
-models.Reservation = require("../models/reservation")(bookshelf);
-models.Reservation_time = require("../models/reservation_time")(bookshelf);
+models.Reservation = require("./reservation")(bookshelf);
+models.Reservation_time = require("./reservation_time")(bookshelf);
+models.Admin = require("./admin")(bookshelf);
 
 module.exports = {
     bookshelf,
