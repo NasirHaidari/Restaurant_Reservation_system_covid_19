@@ -61,8 +61,6 @@ const update = async (req, res) => {
         });
         throw err;
     }
-
-    console.log(booking);
 };
 
 const destroy = async (req, res) => {
