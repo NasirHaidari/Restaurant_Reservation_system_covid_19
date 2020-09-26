@@ -30,6 +30,59 @@ const login = async (req, res, next) => {
     });
 };
 
+const update = async (req, res) => {
+    const bookingId = req.params.id;
+    const data = req.body;
+
+    const booking = await new models.Reservation({ id: bookingId }).fetch({
+        require: false,
+    });
+
+    if (!booking) {
+        res.send({
+            status: "fail",
+            message: "Booking Not Found",
+        });
+        return;
+    }
+
+    try {
+        const updatedBooking = await booking.save(data);
+        res.send({
+            status: "success",
+            data: {
+                updatedBooking,
+            },
+        });
+    } catch (err) {
+        res.status(500).send({
+            status: "error",
+            message: "Exception thrown in database when updating booking.",
+        });
+        throw err;
+    }
+
+    console.log(booking);
+};
+
+const destroy = async (req, res) => {
+    const bookingId = req.params.id;
+
+    try {
+        await new models.Reservation({ id: bookingId }).destroy();
+        res.send({
+            status: " success",
+        });
+    } catch (err) {
+        res.send({
+            status: "fail",
+            message: `couldn't delete booking with id ${bookingId}`,
+        });
+    }
+};
+
 module.exports = {
     login,
+    update,
+    destroy,
 };
