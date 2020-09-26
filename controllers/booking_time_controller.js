@@ -1,5 +1,13 @@
 const models = require("../models");
 
+const index = async (req, res) => {
+    const time = await models.Reservation_time.fetchAll();
+    res.send({
+        status: "success",
+        data: { time },
+    });
+};
+
 const createNewTime = async (req, res) => {
     const data = req.body;
 
@@ -51,6 +59,7 @@ const updateTime = async (req, res) => {
 };
 
 module.exports = {
+    index,
     createNewTime,
     updateTime,
 };

@@ -1,4 +1,3 @@
-const { request } = require("express");
 const express = require("express");
 const router = express.Router();
 const { index, create } = require("../controllers/booking_controller");

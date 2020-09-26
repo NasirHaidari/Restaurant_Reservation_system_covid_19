@@ -31,7 +31,15 @@ const create = async (req, res) => {
 
     console.log(bookingCount);
 
-    if (bookingCount > 14) {
+    const test = await new models.Reservation_time({
+        id: validData.hour_id,
+    }).fetch({
+        require: false,
+    });
+
+    const tablesCount = test.get("tables");
+
+    if (bookingCount == tablesCount) {
         res.send({
             status: "fail",
             message: "There is no available place, try another time or day",
