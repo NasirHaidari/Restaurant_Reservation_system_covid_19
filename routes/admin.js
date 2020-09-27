@@ -6,8 +6,6 @@ const {
     updateTime,
 } = require("../controllers/booking_time_controller");
 
-router.post("/login", login);
-
 router.post("/", createNewTime);
 
 router.put("/:id", update);

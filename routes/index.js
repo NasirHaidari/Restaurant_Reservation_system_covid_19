@@ -1,9 +1,9 @@
 const express = require("express");
-const { route } = require("./booking");
 const router = express.Router();
+const { login } = require("../controllers/admin_controller");
 
 router.use("/booking", require("./booking"));
-router.use("/admin", require("./admin"));
 router.use("/time", require("./time"));
+router.use("/admin", [login], require("./admin"));
 
 module.exports = router;

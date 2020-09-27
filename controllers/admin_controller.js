@@ -13,7 +13,6 @@ const login = async (req, res, next) => {
     const [authSchema, base64Payload] = req.headers.authorization.split(" ");
 
     if (authSchema.toLowerCase() !== "basic") {
-        // not ours to authenticate
         next();
     }
 
@@ -43,9 +42,7 @@ const login = async (req, res, next) => {
         return;
     }
 
-    res.send({
-        status: "success",
-    });
+    next();
 };
 
 const update = async (req, res) => {
