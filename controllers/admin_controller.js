@@ -2,8 +2,28 @@ const models = require("../models");
 
 const login = async (req, res, next) => {
     const data = req.body;
+    if (!req.headers.authorization) {
+        res.status(401).send({
+            status: "fail",
+            data: "Authorization required",
+        });
+        return;
+    }
 
-    const admin = await new models.Admin({ username: data.username }).fetch({
+    const [authSchema, base64Payload] = req.headers.authorization.split(" ");
+
+    if (authSchema.toLowerCase() !== "basic") {
+        // not ours to authenticate
+        next();
+    }
+
+    const decodedPayload = Buffer.from(base64Payload, "base64").toString(
+        "ascii"
+    );
+
+    const [username, password] = decodedPayload.split(":");
+
+    const admin = await new models.Admin({ username: username }).fetch({
         require: false,
     });
 
@@ -15,9 +35,7 @@ const login = async (req, res, next) => {
         return;
     }
 
-    console.log(admin.get("password"));
-
-    if (admin && admin.get("password") !== data.password) {
+    if (admin && admin.get("password") !== password) {
         res.send({
             status: "fail",
             message: "Password isn't correct ",
