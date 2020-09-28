@@ -1,4 +1,5 @@
 const models = require("../models");
+const { matchedData, validationResult } = require("express-validator");
 
 const index = async (req, res) => {
     const time = await models.Reservation_time.fetchAll();
@@ -9,10 +10,20 @@ const index = async (req, res) => {
 };
 
 const createNewTime = async (req, res) => {
-    const data = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log("Create a new time failed validation:", errors.array());
+        res.status(422).send({
+            status: "fail",
+            data: errors.array(),
+        });
+        return;
+    }
+
+    const validData = matchedData(req);
 
     try {
-        const newTime = await new models.Reservation_time(data).save();
+        const newTime = await new models.Reservation_time(validData).save();
 
         res.send({
             status: "success",
@@ -39,10 +50,21 @@ const updateTime = async (req, res) => {
             message: "this time is not existing",
         });
     }
-    const data = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log("Create a new time failed validation:", errors.array());
+        res.status(422).send({
+            status: "fail",
+            data: errors.array(),
+        });
+        return;
+    }
+
+    const validData = matchedData(req);
 
     try {
-        const updatedTime = await existingTime.save(data);
+        const updatedTime = await existingTime.save(validData);
         res.send({
             status: "success",
             data: {

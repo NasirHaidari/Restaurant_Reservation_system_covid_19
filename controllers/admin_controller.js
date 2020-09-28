@@ -1,5 +1,6 @@
 const models = require("../models");
 const jwt = require("jsonwebtoken");
+const { matchedData, validationResult } = require("express-validator");
 
 const login = async (req, res, next) => {
     const data = req.body;
@@ -53,7 +54,17 @@ const index = async (req, res) => {
 
 const update = async (req, res) => {
     const bookingId = req.params.id;
-    const data = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log("update a time failed validation:", errors.array());
+        res.status(422).send({
+            status: "fail",
+            data: errors.array(),
+        });
+        return;
+    }
+
+    const validData = matchedData(req);
 
     const booking = await new models.Reservation({ id: bookingId }).fetch({
         require: false,
@@ -68,7 +79,7 @@ const update = async (req, res) => {
     }
 
     try {
-        const updatedBooking = await booking.save(data);
+        const updatedBooking = await booking.save(validData);
         res.send({
             status: "success",
             data: {
