@@ -1,14 +1,6 @@
 const models = require("../models");
 const { matchedData, validationResult } = require("express-validator");
 
-const index = async (req, res) => {
-    const data = await models.Reservation.fetchAll();
-    res.send({
-        status: "success",
-        data,
-    });
-};
-
 const create = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -64,6 +56,5 @@ const create = async (req, res) => {
 };
 
 module.exports = {
-    index,
     create,
 };

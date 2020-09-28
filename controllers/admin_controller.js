@@ -1,28 +1,10 @@
 const models = require("../models");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res, next) => {
     const data = req.body;
-    if (!req.headers.authorization) {
-        res.status(401).send({
-            status: "fail",
-            data: "Authorization required",
-        });
-        return;
-    }
 
-    const [authSchema, base64Payload] = req.headers.authorization.split(" ");
-
-    if (authSchema.toLowerCase() !== "basic") {
-        next();
-    }
-
-    const decodedPayload = Buffer.from(base64Payload, "base64").toString(
-        "ascii"
-    );
-
-    const [username, password] = decodedPayload.split(":");
-
-    const admin = await new models.Admin({ username: username }).fetch({
+    const admin = await new models.Admin({ username: data.username }).fetch({
         require: false,
     });
 
@@ -34,7 +16,7 @@ const login = async (req, res, next) => {
         return;
     }
 
-    if (admin && admin.get("password") !== password) {
+    if (admin && admin.get("password") !== data.password) {
         res.send({
             status: "fail",
             message: "Password isn't correct ",
@@ -42,7 +24,31 @@ const login = async (req, res, next) => {
         return;
     }
 
-    next();
+    const payload = {
+        data: {
+            id: admin.get("id"),
+            username: admin.get("username"),
+        },
+    };
+
+    const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: process.env.ACCESS_TOKEN_LIFETIME || "1h",
+    });
+
+    res.send({
+        status: "success",
+        token: {
+            access_token,
+        },
+    });
+};
+
+const index = async (req, res) => {
+    const data = await models.Reservation.fetchAll();
+    res.send({
+        status: "success",
+        data,
+    });
 };
 
 const update = async (req, res) => {
@@ -96,6 +102,7 @@ const destroy = async (req, res) => {
 
 module.exports = {
     login,
+    index,
     update,
     destroy,
 };
