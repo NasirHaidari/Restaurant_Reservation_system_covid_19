@@ -23,18 +23,27 @@ const create = async (req, res) => {
 
     console.log(bookingCount);
 
-    const test = await new models.Reservation_time({
+    const booking_time = await new models.Reservation_time({
         id: validData.hour_id,
     }).fetch({
         require: false,
     });
 
-    const tablesCount = test.get("tables");
+    const tablesCount = Number(booking_time.get("tables"));
+    const guests_table = Number(booking_time.get("guests_table"));
 
-    if (bookingCount == tablesCount) {
+    if (bookingCount === tablesCount) {
         res.send({
             status: "fail",
             message: "There is no available place, try another time or day",
+        });
+        return;
+    }
+
+    if (Number(validData.guests) > guests_table) {
+        res.send({
+            status: "fail",
+            message: `our tables available just for ${guests_table} persons`,
         });
         return;
     }
