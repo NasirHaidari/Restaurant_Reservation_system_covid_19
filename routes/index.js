@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
         status: 'success'
 
     });
-
 });
+
 
 
 module.exports = router;
