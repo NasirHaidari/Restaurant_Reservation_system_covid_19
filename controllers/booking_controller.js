@@ -1,6 +1,37 @@
 const models = require("../models");
 const { matchedData, validationResult } = require("express-validator");
 
+const makeCountCheck = async (req, res) => {
+    const data = req.body;
+
+    const bookingCount = await new models.Reservation()
+        .where({
+            hour_id: data.hour_id,
+            day: data.day,
+        })
+        .count();
+
+    const booking_time = await new models.Reservation_time({
+        id: data.hour_id,
+    }).fetch({
+        require: false,
+    });
+
+    const tablesCount = Number(booking_time.get("tables"));
+
+    if (bookingCount === tablesCount) {
+        res.send({
+            status: "fail",
+            message: "There is no available place, try another time or day",
+        });
+        return;
+    }
+
+    res.send({
+        status: "success",
+    });
+};
+
 const create = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -65,5 +96,6 @@ const create = async (req, res) => {
 };
 
 module.exports = {
+    makeCountCheck,
     create,
 };

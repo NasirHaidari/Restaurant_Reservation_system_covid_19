@@ -1,9 +1,11 @@
 const express = require("express");
-const mysql = require("mysql");
+var cors = require("cors");
 
 require("dotenv").config();
 
 const app = express();
+
+app.use(cors());
 
 app.listen("3000", () => {
     console.log("server runs on port 3000");

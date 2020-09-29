@@ -1,32 +1,45 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import axios from "axios";
+import SubmitForm from "./SubmitForm";
 
 const Search = () => {
     const [formData, setFormData] = useState({});
-    const [time, setTime] = useState("");
-    const [testData, setTestData] = useState({});
-    const { register, handleSubmit, errors } = useForm();
+    const [time, setTime] = useState(null);
+    const [day, setDay] = useState("");
     const [choseTime, setChoseTime] = useState(false);
-    const onSubmit = (data) => {
-        console.log(data);
-        setTestData({ ...data, time });
-        // setFormData([data])
-        console.log(testData);
-    };
+    const [showForm, setShowForm] = useState(false);
 
     const handleFormClick = () => {
         setChoseTime(true);
     };
+
+    const handleCheckAvailability = async () => {
+        axios
+            .post("http://localhost:3000/booking/check", {
+                day,
+                hour_id: time,
+            })
+            .then((data) => {
+                console.log(data.data);
+                if (data.data.status == "success") setShowForm(true);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <div className='container'>
-            {choseTime ? (
+            {showForm ? (
+                <SubmitForm time={time} day={day} />
+            ) : choseTime ? (
                 <div className='d-flex flex-column '>
                     <div className='d-flex justify-content-center mt-5'>
                         <button
                             type='button'
                             className='btn btn-primary btn-lg mr-4'
                             onClick={() => {
-                                setTime("18");
+                                setTime(1);
                             }}
                         >
                             kl. 18
@@ -35,7 +48,7 @@ const Search = () => {
                             type='button'
                             className='btn btn-primary btn-lg '
                             onClick={() => {
-                                setTime("18");
+                                setTime(2);
                             }}
                         >
                             kl. 21
@@ -49,29 +62,32 @@ const Search = () => {
                             GO back
                         </button>
 
-                        <button className='btn btn-success'>
+                        <button
+                            className='btn btn-success'
+                            onClick={handleCheckAvailability}
+                        >
                             make a reservation
                         </button>
                     </div>
                 </div>
             ) : (
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className='mt-4 text-center'
-                >
-                    <label for='date-input' className='col-2 col-form-label'>
+                <form className='mt-4 text-center'>
+                    <label
+                        htmlFor='date-input'
+                        className='col-2 col-form-label'
+                    >
                         Date and time
                     </label>
                     <div className='col-10 mx-auto'>
                         <input
                             className='form-control '
                             type='date'
-                            value='2011-08-19T13:45:00'
                             id='date-input'
-                            ref={register({ required: "Välj först ett datum" })}
+                            onChange={(e) => {
+                                setDay(e.target.value);
+                            }}
                         />
                     </div>
-                    {errors.date && <p>{errors.date.message}</p>}
 
                     <div className='text-center'>
                         <button
