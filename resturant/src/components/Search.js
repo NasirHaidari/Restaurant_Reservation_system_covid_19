@@ -8,6 +8,8 @@ const Search = () => {
     const [day, setDay] = useState("");
     const [choseTime, setChoseTime] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleFormClick = () => {
         console.log(day);
@@ -29,7 +31,14 @@ const Search = () => {
             })
             .then((data) => {
                 console.log(data.data);
-                if (data.data.status === "success") setShowForm(true);
+                if (data.data.status === "success") {
+                    setShowForm(true);
+                    setError(false);
+                    setErrorMessage("");
+                } else {
+                    setError(true);
+                    setErrorMessage(data.data.message);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -60,6 +69,14 @@ const Search = () => {
                               })
                             : ""}
                     </div>
+                    {error ? (
+                        <p className='alert alert-warning mt-4'>
+                            {" "}
+                            {errorMessage}
+                        </p>
+                    ) : (
+                        ""
+                    )}
                     <div className='mt-5 d-flex flex-end justify-content-between'>
                         <button
                             className='btn btn-danger'
@@ -83,7 +100,7 @@ const Search = () => {
                         htmlFor='date-input'
                         className='col-2 col-form-label'
                     >
-                        Date and time
+                        Chose a day
                     </label>
                     <div className='col-10 mx-auto'>
                         <input
