@@ -22,7 +22,8 @@ const makeCountCheck = async (req, res) => {
     if (bookingCount === tablesCount) {
         res.send({
             status: "fail",
-            message: "There is no available place, try another time or day",
+            message:
+                "There is no available place, please try with another time or day",
         });
         return;
     }
