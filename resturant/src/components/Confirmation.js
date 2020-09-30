@@ -18,6 +18,11 @@ const Confirmation = (props) => {
                         🤝
                     </span>
                 </h2>
+                <p>
+                    We are looking forward to your visit on{" "}
+                    <strong> {day}</strong> at <strong>{time.clock}</strong>{" "}
+                    o'clock
+                </p>
             </div>
             <div className='my-5'>
                 <p>Reservation information:</p>

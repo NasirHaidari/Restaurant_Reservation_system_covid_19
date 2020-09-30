@@ -3,25 +3,33 @@ import axios from "axios";
 import SubmitForm from "./SubmitForm";
 
 const Search = () => {
-    const [formData, setFormData] = useState({});
     const [time, setTime] = useState(null);
+    const [timeData, setTimeData] = useState([]);
     const [day, setDay] = useState("");
     const [choseTime, setChoseTime] = useState(false);
     const [showForm, setShowForm] = useState(false);
 
     const handleFormClick = () => {
+        console.log(day);
         setChoseTime(true);
     };
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/time").then((res) => {
+            console.log(res.data);
+            setTimeData(res.data.data.time);
+        });
+    }, []);
 
     const handleCheckAvailability = async () => {
         axios
             .post("http://localhost:3000/booking/check", {
                 day,
-                hour_id: time,
+                hour_id: time.id,
             })
             .then((data) => {
                 console.log(data.data);
-                if (data.data.status == "success") setShowForm(true);
+                if (data.data.status === "success") setShowForm(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -35,24 +43,22 @@ const Search = () => {
             ) : choseTime ? (
                 <div className='d-flex flex-column '>
                     <div className='d-flex justify-content-center mt-5'>
-                        <button
-                            type='button'
-                            className='btn btn-primary btn-lg mr-4'
-                            onClick={() => {
-                                setTime(1);
-                            }}
-                        >
-                            kl. 18
-                        </button>
-                        <button
-                            type='button'
-                            className='btn btn-primary btn-lg '
-                            onClick={() => {
-                                setTime(2);
-                            }}
-                        >
-                            kl. 21
-                        </button>
+                        {timeData
+                            ? timeData.map((timeInfo) => {
+                                  return (
+                                      <button
+                                          key={timeInfo.id}
+                                          type='button'
+                                          className='btn btn-primary btn-lg mr-4'
+                                          onClick={() => {
+                                              setTime(timeInfo);
+                                          }}
+                                      >
+                                          kl. {timeInfo.clock}
+                                      </button>
+                                  );
+                              })
+                            : ""}
                     </div>
                     <div className='mt-5 d-flex flex-end justify-content-between'>
                         <button
@@ -65,6 +71,7 @@ const Search = () => {
                         <button
                             className='btn btn-success'
                             onClick={handleCheckAvailability}
+                            disabled={!time}
                         >
                             make a reservation
                         </button>
@@ -93,6 +100,7 @@ const Search = () => {
                         <button
                             onClick={handleFormClick}
                             className='btn btn-success mt-4'
+                            disabled={!day}
                         >
                             Chose a time
                         </button>

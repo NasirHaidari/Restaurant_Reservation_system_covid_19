@@ -11,12 +11,12 @@ const SubmitForm = ({ day, time }) => {
     const [conformationInfo, setConformationInfo] = useState({});
 
     const onSubmit = (data) => {
-        console.log({ ...data, day, hour_id: time });
+        console.log({ ...data, day, hour_id: time.id });
         axios
             .post("http://localhost:3000/booking", {
                 ...data,
                 day,
-                hour_id: time,
+                hour_id: time.id,
             })
             .then((res) => {
                 if (res.data.status !== "success") {
@@ -29,7 +29,7 @@ const SubmitForm = ({ day, time }) => {
                     setConformationInfo({
                         ...data,
                         day,
-                        hour_id: time,
+                        time,
                     });
                     setConformation(true);
                 }
