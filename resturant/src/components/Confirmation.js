@@ -1,14 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useWindowSize } from "react-use";
-import Confetti from "react-confetti";
 
 const Confirmation = (props) => {
-    const { width, height } = useWindowSize();
     const { name, day, time, phone, email, guests } = props.conformationInfo;
     return (
         <div className='text-center container d-flex flex-column align-content-around'>
-            <Confetti width={width} height={height} />
             <div className='my-4'>
                 <h1>Booking confirmation</h1>
                 <h2>
