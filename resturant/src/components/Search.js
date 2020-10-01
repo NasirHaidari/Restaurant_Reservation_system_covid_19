@@ -1,46 +1,82 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import SubmitForm from "./SubmitForm";
 
 const Search = () => {
-    const [formData, setFormData] = useState({});
-    const [time, setTime] = useState("");
-    const [testData, setTestData] = useState({});
-    const { register, handleSubmit, errors } = useForm();
+    const [time, setTime] = useState(null);
+    const [timeData, setTimeData] = useState([]);
+    const [day, setDay] = useState("");
     const [choseTime, setChoseTime] = useState(false);
-    const onSubmit = (data) => {
-        console.log(data);
-        setTestData({ ...data, time });
-        // setFormData([data])
-        console.log(testData);
-    };
+    const [showForm, setShowForm] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleFormClick = () => {
+        console.log(day);
         setChoseTime(true);
     };
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/time").then((res) => {
+            console.log(res.data);
+            setTimeData(res.data.data.time);
+        });
+    }, []);
+
+    const handleCheckAvailability = async () => {
+        axios
+            .post("http://localhost:3000/booking/check", {
+                day,
+                hour_id: time.id,
+            })
+            .then((data) => {
+                console.log(data.data);
+                if (data.data.status === "success") {
+                    setShowForm(true);
+                    setError(false);
+                    setErrorMessage("");
+                } else {
+                    setError(true);
+                    setErrorMessage(data.data.message);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <div className='container'>
-            {choseTime ? (
+            {showForm ? (
+                <SubmitForm time={time} day={day} />
+            ) : choseTime ? (
                 <div className='d-flex flex-column '>
                     <div className='d-flex justify-content-center mt-5'>
-                        <button
-                            type='button'
-                            className='btn btn-primary btn-lg mr-4'
-                            onClick={() => {
-                                setTime("18");
-                            }}
-                        >
-                            kl. 18
-                        </button>
-                        <button
-                            type='button'
-                            className='btn btn-primary btn-lg '
-                            onClick={() => {
-                                setTime("18");
-                            }}
-                        >
-                            kl. 21
-                        </button>
+                        {timeData
+                            ? timeData.map((timeInfo) => {
+                                  return (
+                                      <button
+                                          key={timeInfo.id}
+                                          type='button'
+                                          className='btn btn-primary btn-lg mr-4'
+                                          onClick={() => {
+                                              setTime(timeInfo);
+                                          }}
+                                      >
+                                          kl. {timeInfo.clock}
+                                      </button>
+                                  );
+                              })
+                            : ""}
                     </div>
+                    {error ? (
+                        <p className='alert alert-warning mt-4'>
+                            {" "}
+                            {errorMessage}
+                        </p>
+                    ) : (
+                        ""
+                    )}
                     <div className='mt-5 d-flex flex-end justify-content-between'>
                         <button
                             className='btn btn-danger'
@@ -49,34 +85,39 @@ const Search = () => {
                             GO back
                         </button>
 
-                        <button className='btn btn-success'>
+                        <button
+                            className='btn btn-success'
+                            onClick={handleCheckAvailability}
+                            disabled={!time}
+                        >
                             make a reservation
                         </button>
                     </div>
                 </div>
             ) : (
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className='mt-4 text-center'
-                >
-                    <label for='date-input' className='col-2 col-form-label'>
-                        Date and time
+                <form className='mt-4 text-center'>
+                    <label
+                        htmlFor='date-input'
+                        className='col-2 col-form-label'
+                    >
+                        Chose a day
                     </label>
                     <div className='col-10 mx-auto'>
                         <input
                             className='form-control '
                             type='date'
-                            value='2011-08-19T13:45:00'
                             id='date-input'
-                            ref={register({ required: "Välj först ett datum" })}
+                            onChange={(e) => {
+                                setDay(e.target.value);
+                            }}
                         />
                     </div>
-                    {errors.date && <p>{errors.date.message}</p>}
 
                     <div className='text-center'>
                         <button
                             onClick={handleFormClick}
                             className='btn btn-success mt-4'
+                            disabled={!day}
                         >
                             Chose a time
                         </button>
