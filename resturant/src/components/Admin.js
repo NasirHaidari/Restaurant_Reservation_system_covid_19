@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import AdminAddRemove from './AdminAddRemove';
@@ -12,7 +12,10 @@ function Admin() {
     const onSubmit = (data) => {
         axios.post('http://localhost:3000/login', data)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+                localStorage.setItem('token', JSON.stringify(res.data.token.access_token));
+                console.log(localStorage.getItem('token'))
+
             })
             .catch(err => {
                 console.log(err)
