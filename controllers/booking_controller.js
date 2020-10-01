@@ -1,5 +1,7 @@
 const models = require("../models");
 const { matchedData, validationResult } = require("express-validator");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const makeCountCheck = async (req, res) => {
     const data = req.body;
@@ -79,6 +81,22 @@ const create = async (req, res) => {
         });
         return;
     }
+
+    const msg = {
+        to: validData.email, // Change to your recipient
+        from: " samer.munawwar@medieinstitutet.se", // Change to your verified sender
+        subject: "Booking details",
+        text: "We are looking forward to your visit",
+        html: "<strong>welcome to our restaurant</strong>",
+    };
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log("Email sent");
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     try {
         const booking = await new models.Reservation(validData).save();
