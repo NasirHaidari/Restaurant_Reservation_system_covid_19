@@ -3,100 +3,111 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function AdminAddRemove() {
-    const [key, setKey] = useState("");
-    const [bookings, setBookings] = useState([]);
-    const [searchInput, setSearchInput] = useState("");
-    const navigate = useNavigate();
-    const handleClick = () => navigate("/search");
+  const [id, setId] = useState("");
+  const [key, setKey] = useState("");
+  const [bookings, setBookings] = useState([]);
+  const [filterDisplay, setFilterDisplay] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
+  const handleClick = () => navigate("/search");
 
-    useEffect(() => {
-        const token = JSON.parse(localStorage.getItem("token"));
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-        console.log(token);
+  const fetchTheData = () => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    console.log(token);
 
-        axios.get("http://localhost:3000/admin", config).then((res) => {
-            console.log(res.data);
-            setBookings(res.data.data);
-        });
-    }, []);
+    axios.get("http://localhost:3000/admin", config).then((res) => {
+      console.log(res.data);
+      setBookings(res.data.data);
+    });
+  };
 
-    const removeHandle = (e) => {
-        e.preventDefault();
-        axios.delete("http://localhost:3000/admin/", key);
+  useEffect(() => {
+    fetchTheData();
+  }, []);
+
+  const handleSearch = (name) => {
+    let newData;
+    if (!name) {
+      newData = [];
+    }
+    newData = bookings.filter((booking) => booking.name.includes(name));
+    setFilterDisplay(newData);
+  };
+
+  const removeBookingHandle = (id) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
     };
 
-    const editHandle = () => {
-        console.log("editing");
-    };
+    axios.delete(`http://localhost:3000/admin/${id}`, config).then((res) => {
+      fetchTheData();
+      setFilterDisplay([]);
+    });
+  };
 
-    const handleSearch = (name) => {
-        const NewData = bookings.filter((booking) =>
-            booking.name.includes(name)
-        );
+  const mapOverData = (bookings) => {
+    return bookings.map((booking) => {
+      return (
+        <li
+          key={booking.id}
+          className="list-group-item list-group-item-secondary d-flex justify-content-between mb-1"
+        >
+          {booking.name}
+          <div>
+            <button className="btn btn-info">Edit</button>
+            <button
+              onClick={() => removeBookingHandle(booking.id)}
+              className="btn btn-danger ml-1"
+            >
+              Remove
+            </button>
+          </div>
+        </li>
+      );
+    });
+  };
 
-        setBookings(NewData);
-    };
-
-    return (
-        <div className='container'>
-            <button onClick={editHandle}>Edit</button>
-            <form onSubmit={removeHandle}>
-                <label>booking number for remove a booking</label>
-                <input
-                    type='text'
-                    onChange={(e) => setKey(e.target.value)}
-                    placeholder='input your bookings number here and click the remove button'
-                />
-            </form>
-            <button onClick={handleClick}>make a reservation</button>
-            {bookings ? (
-                <div>
-                    <div class='input-group mb-3'>
-                        <input
-                            onChange={(e) => {
-                                setSearchInput(e.target.value);
-                                handleSearch(e.target.value);
-                            }}
-                            type='text'
-                            class='form-control'
-                            placeholder="Recipient's username"
-                            aria-label="Recipient's username"
-                            aria-describedby='button-addon2'
-                            value={searchInput}
-                        />
-                        <div class='input-group-append'>
-                            <button
-                                class='btn btn-outline-success'
-                                type='button'
-                                id='button-addon2'
-                            >
-                                Button
-                            </button>
-                        </div>
-                    </div>
-                    <ul className='list-group'>
-                        {bookings.map((booking) => {
-                            return (
-                                <li className='list-group-item list-group-item-secondary d-flex justify-content-between mb-1'>
-                                    {booking.name}
-                                    <div>
-                                        <button className='btn btn-info'>
-                                            Edit
-                                        </button>
-                                        <button className='btn btn-danger ml-1'>
-                                            Remove
-                                        </button>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            ) : (
-                ""
-            )}
+  return (
+    <div className="container">
+      <button onClick={handleClick}>make a reservation</button>
+      {bookings ? (
+        <div>
+          <div className="input-group mb-3">
+            <input
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+                handleSearch(e.target.value);
+              }}
+              type="text"
+              className="form-control"
+              placeholder="Recipient's username"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+              value={searchInput}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-success"
+                type="button"
+                id="button-addon2"
+              >
+                Button
+              </button>
+            </div>
+          </div>
+          <ul className="list-group">
+            {filterDisplay.length > 0
+              ? mapOverData(filterDisplay)
+              : mapOverData(bookings)}
+          </ul>
         </div>
-    );
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
