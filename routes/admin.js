@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { index, update, destroy } = require("../controllers/admin_controller");
 const {
-  createNewTime,
-  updateTime,
+    createNewTime,
+    updateTime,
 } = require("../controllers/booking_time_controller");
 
 const {
-  updateBookingValidationsRules,
-  createTimeValidationsRules,
-  updateTimeValidationsRules,
+    updateBookingValidationsRules,
+    createTimeValidationsRules,
+    updateTimeValidationsRules,
 } = require("../validation_rules/admin");
 
 router.get("/", index);
