@@ -8,5 +8,5 @@ router.post("/login", login);
 router.use("/booking", require("./booking"));
 router.use("/time", require("./time"));
 router.use("/admin", [validateToken], require("./admin"));
-
+router.use("/booked", require("./admin"));
 module.exports = router;
