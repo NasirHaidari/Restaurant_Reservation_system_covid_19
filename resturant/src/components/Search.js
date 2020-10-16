@@ -47,6 +47,7 @@ const Search = () => {
 
     return (
         <div className='container'>
+        <h1 className="log text-center display-3 font-weight-bold">épices</h1>
             {showForm ? (
                 <SubmitForm time={time} day={day} />
             ) : choseTime ? (

@@ -30,6 +30,7 @@ function Admin() {
         <AdminAddRemove />
       ) : (
         <div className="container d-flex flex-column justify-content-center admin_form">
+        <h1 className="log text-center display-3 font-weight-bold">épices</h1>
           <h1 className="text-center mb-5">Login </h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">

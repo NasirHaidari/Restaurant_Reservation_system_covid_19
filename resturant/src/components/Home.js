@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import footer from './Footer'
+
 import useGetTime from "./useGetTime";
+
+
 
 let date_ob = new Date();
 let date = ("0" + date_ob.getDate()).slice(-2);
@@ -10,11 +14,15 @@ let datum = year + "-" + month + "-" + date;
 
 export default function Home() {
     const [left18, left21, timeNow] = useGetTime();
+    const navigate = useNavigate()
 
     return (
-        <div className='container well'>
-            <h1 className='text-center my-5'>Welcom To SKY 🥩🍗 🍺</h1>
-            <div className='success bg-secondary p-3 '>
+        <>
+        <div className='container well mb-5'>
+            <h2 className='text-center mt-3 '><span>CAFÉ/</span><span className="text-warning">RESTAURANT</span></h2>
+            <h1 className="log text-center display-3 font-weight-bold">épices</h1>
+            <h5 onClick={() => navigate("/search")} className="reservation text-center border border-warning reservation rounded">MAKE RESERVATION</h5>
+            <div className='info success badge-dark rounded p-3 '>
                 <h3>{datum}</h3>
                 {timeNow <= 17 && (
                     <p className='text-warning'>
@@ -30,11 +38,15 @@ export default function Home() {
                 )}
                 {timeNow >= 21 && (
                     <p className='text-warning'>
-                        Tyvärr vi har inte lediga bord kvar att boka till idag
-                        !!!
+                        Tyvärr vi har inga lediga bord för kväll !!!
                     </p>
                 )}
+                
             </div>
+           
         </div>
+        
+         <footer/>
+         </>
     );
 }

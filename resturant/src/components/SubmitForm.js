@@ -102,9 +102,14 @@ const SubmitForm = ({ day, time }) => {
                                 {errors.guests.message}
                             </p>
                         )}
+                       
                     </div>
-
+                        <label>Jag ger mitt samtyckte att ni samla samt spara mina personuppgifter enligt GDPR lagen.</label>
+                        <input
+                        className="form-check"
+                        type="checkbox" required/>
                     <input type='submit' className='btn btn-primary mt-3' />
+
                 </form>
             )}
             {submitError ? (

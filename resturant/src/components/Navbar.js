@@ -1,40 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, NavLink } from "react-router-dom";
+
+
+import logo from '../images/33.png'
 
 function Navbar() {
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
   return (
-    <>
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link className="navbar-brand" to="/">
-          SKY
-        </Link>
+
+
+<nav className="navbar navbar-dark bg-transparent navbar-expand-lg">
+        <NavLink className="navbar-brand" to="/">
+         <p className="text-warning logo">épices</p>
+        </NavLink>
         <button
-          className="navbar-toggler"
+          className="custom-toggler navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNavAltMarkup"
           aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
+          aria-expanded={!isNavCollapsed ? true : false}
           aria-label="Toggle navigation"
+          onClick={handleNavCollapse}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`}  id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <Link to="/" className="nav-link active">
+            <NavLink to="/" className="nav-link active">
               Home <span className="sr-only">(current)</span>
-            </Link>
-            <Link to="/search" className="nav-link">
-              booking
-            </Link>
-            <Link to="/login" className="nav-link">
+            </NavLink>
+            <NavLink to="/search" className="nav-link">
+              Booking
+            </NavLink>
+            <NavLink to="/login" className="nav-link">
               Login
-            </Link>
+            </NavLink>
           </div>
         </div>
       </nav>
-    </>
+
   );
 }
 
 export default Navbar;
+

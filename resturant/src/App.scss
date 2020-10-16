@@ -8,5 +8,27 @@ $body-color: #fefefe;
 @import "~bootstrap/scss/bootstrap";
 
 .admin_form {
-    height: 50vh;
+  height: 50vh;
+}
+body {
+  background-image: url(images/5.jpg);
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #222;
+}
+
+.log {
+  @import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+  font-family: "Leckerli One", cursive;
+}
+
+.info {
+  opacity: 80%;
+}
+
+.reservation:hover {
+  color: orange;
+  background-color: whitesmoke;
+  transition: 0.3s;
 }
