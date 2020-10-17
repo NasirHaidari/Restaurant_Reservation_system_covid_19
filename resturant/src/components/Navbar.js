@@ -14,7 +14,7 @@ function Navbar() {
 
 <nav className="navbar navbar-dark bg-transparent navbar-expand-lg">
         <NavLink className="navbar-brand" to="/">
-         <p className="text-warning logo">épices</p>
+         <p className="text-warning" id="logo">épices</p>
         </NavLink>
         <button
           className="custom-toggler navbar-toggler"

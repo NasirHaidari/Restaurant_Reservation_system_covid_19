@@ -1,37 +1,36 @@
 import React from 'react';
 
-const footer = () => {
+const Footer = () => {
 
     return (  
-        <footer className="footer">
+        <footer className="footer bg-dark rounded">
 		<div className="container">
 			<div className="row">
 				<div className="col-sm-4">
 				
-					
-					
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti dolorum, sint corporis nostrum, possimus unde eos vitae eius quasi saepe.
-					<h5 className="section_footer__heading">
+					<h5 className="text-warning font-weight-bold">
 						About Us
 					</h5>
+					
+						Lorem ipsum dolor sit amet, gwfaalöfa asd dswefk bdfes asfsfas 
 					<p></p>
 
 				</div>
 				<div className="col-sm-4">
 				
 					
-					<h5 className="section_footer__heading">
+					<h5 className="text-warning font-weight-bold">
 						Contact info
 					</h5>
-					<ul className="section_footer__info">
+					<ul className="list-unstyled">
 						<li>
-							<i className="fas fa-map-marker-alt"></i> 1234 Altschul, New York, NY 10027-0000
+							<i className="adress"></i> Drottningsgatan 4B 222 22 Malmö
 						</li>
 						<li>
-							<i className="fas fa-phone"></i> +1 987 654 3210
+							<i className="phone"></i> +4600000000
 						</li>
 						<li>
-							<i className="far fa-envelope"></i> <a href="mailto:admin@domain.com">admin@domain.com</a>
+							<i className="email"></i> <a className="text-warning" href="mailto:admin@epices.com">admin@epices.com</a>
 						</li>
 					</ul>
 
@@ -39,16 +38,16 @@ const footer = () => {
 				<div className="col-sm-4">
 				
 					
-					<h5 className="section_footer__heading">
+					<h5 className="text-warning font-weight-bold">
 						Opening hours
 					</h5>
-					<div className="section_footer__open">
-						<div className="section_footer__open__days">Monday - Thursday</div>
-						<div className="section_footer__open__time">10:00 AM - 11:00 PM</div>
+					<div className="open">
+						<div className="days">Monday - Thursday</div>
+						<div className="openTime">10:00 AM - 11:00 PM</div>
 					</div>
-					<div className="section_footer__open">
-						<div className="section_footer__open__days">Friday - Sunday</div>
-						<div className="section_footer__open__time">12:00 AM - 03:00 AM</div>
+					<div className="open2">
+						<div className="days2">Friday - Sunday</div>
+						<div className="openTime">12:00 AM - 03:00 AM</div>
 					</div>
 
 				</div>
@@ -57,8 +56,8 @@ const footer = () => {
 				<div className="col-12">
 				
 					
-					<div className="section_footer__copyright">
-						© <span id="js-current-year">2020</span> Touché. All rights reserved.
+					<div className="copyright">
+						© <span id="year">2020</span> <span className="logo text-warning" id="logo">épices</span>. All rights reserved.
 					</div>
 
 				</div>
@@ -68,4 +67,4 @@ const footer = () => {
     );
 }
  
-export default footer;
+export default Footer;

@@ -32,3 +32,16 @@ body {
   background-color: whitesmoke;
   transition: 0.3s;
 }
+
+#logo {
+  @import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+  font-family: "Leckerli One", cursive;
+}
+
+footer {
+  opacity: 80%;
+}
+
+.pic {
+  opacity: 90%;
+}

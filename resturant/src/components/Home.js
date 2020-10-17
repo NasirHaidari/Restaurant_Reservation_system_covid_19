@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import footer from './Footer'
+import Footer from './Footer'
+import Recipes from "./Recipes"
 
 import useGetTime from "./useGetTime";
 
@@ -44,9 +45,9 @@ export default function Home() {
                 
             </div>
            
-        </div>
-        
-         <footer/>
+        </div>  
+        <Recipes/>
+         <Footer/>
          </>
     );
 }
