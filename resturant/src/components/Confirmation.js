@@ -35,9 +35,7 @@ const Confirmation = (props) => {
                     <li className='list-group-item list-group-item-secondary'>
                         Phone: {phone}
                     </li>
-                    <li className='list-group-item list-group-item-secondary'>
-                        Booking id : 12124124141
-                    </li>
+                   
                 </ul>
             </div>
             <p>Thank you very much for your booking</p>

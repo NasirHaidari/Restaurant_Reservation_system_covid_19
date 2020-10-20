@@ -55,7 +55,9 @@ export default function AdminAddRemove() {
                     key={booking.id}
                     className='list-group-item list-group-item-secondary d-flex justify-content-between mb-1'
                 >
-                    {booking.name}
+                    <span className="font-weight-bold">{booking.name}</span>
+                    <span className="text-danger font-weight-bold">{booking.day}</span>
+                    <span className="font-weight-bold">{booking.guests}</span>
                     <div>
                         <Link
                             to={`/admin/editBooking/${booking.id}`}
@@ -78,7 +80,7 @@ export default function AdminAddRemove() {
 
     return (
         <div className='container'>
-            <button onClick={handleClick}>make a reservation</button>
+            <button className="btn btn-dark btn-block " onClick={handleClick}>make a reservation</button>
             {bookings ? (
                 <div>
                     <div className='input-group mb-3'>
@@ -96,11 +98,11 @@ export default function AdminAddRemove() {
                         />
                         <div className='input-group-append'>
                             <button
-                                className='btn btn-outline-success'
+                                className='btn btn-dark'
                                 type='button'
                                 id='button-addon2'
                             >
-                                Button
+                                Search
                             </button>
                         </div>
                     </div>
