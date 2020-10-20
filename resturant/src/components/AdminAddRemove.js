@@ -49,38 +49,48 @@ export default function AdminAddRemove() {
     };
 
     const mapOverData = (bookings) => {
-        return bookings.map((booking) => {
-            return (
-                <li
-                    key={booking.id}
-                    className='list-group-item list-group-item-secondary d-flex justify-content-between mb-1'
-                >
-                    <span className="font-weight-bold">{booking.name}</span>
-                    <span className="text-danger font-weight-bold">{booking.day}</span>
-                    <span className="font-weight-bold">{booking.guests}</span>
-                    <div>
-                        <Link
-                            to={`/admin/editBooking/${booking.id}`}
-                            state={{ booking }}
-                            className='btn btn-info'
-                        >
-                            Edit
-                        </Link>
-                        <button
-                            onClick={() => removeBookingHandle(booking.id)}
-                            className='btn btn-danger ml-1'
-                        >
-                            Remove
-                        </button>
-                    </div>
-                </li>
-            );
-        });
+        return bookings
+            .sort((a, b) => {
+                return new Date(b.day) - new Date(a.day);
+            })
+            .map((booking) => {
+                return (
+                    <li
+                        key={booking.id}
+                        className='list-group-item list-group-item-secondary d-flex justify-content-between mb-1'
+                    >
+                        <span className='font-weight-bold'>{booking.name}</span>
+                        <span className='text-danger font-weight-bold'>
+                            {booking.day}
+                        </span>
+                        <span className='font-weight-bold'>
+                            {booking.guests}
+                        </span>
+                        <div>
+                            <Link
+                                to={`/admin/editBooking/${booking.id}`}
+                                state={{ booking }}
+                                className='btn btn-info'
+                            >
+                                Edit
+                            </Link>
+                            <button
+                                onClick={() => removeBookingHandle(booking.id)}
+                                className='btn btn-danger ml-1'
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </li>
+                );
+            });
     };
 
     return (
         <div className='container'>
-            <button className="btn btn-dark btn-block " onClick={handleClick}>make a reservation</button>
+            <button className='btn btn-dark btn-block ' onClick={handleClick}>
+                make a reservation
+            </button>
             {bookings ? (
                 <div>
                     <div className='input-group mb-3'>

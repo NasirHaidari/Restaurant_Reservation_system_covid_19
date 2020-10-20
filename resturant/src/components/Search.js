@@ -3,6 +3,12 @@ import axios from "axios";
 import SubmitForm from "./SubmitForm";
 import useGetTime from "./useGetTime";
 
+let date_ob = new Date();
+let date = ("0" + date_ob.getDate()).slice(-2);
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+let year = date_ob.getFullYear();
+let datum = year + "-" + month + "-" + date;
+
 const Search = () => {
     const [time, setTime] = useState(null);
     const [timeData, setTimeData] = useState([]);
@@ -14,11 +20,11 @@ const Search = () => {
     const [left18, left21, timeNow] = useGetTime();
 
     const handleFormClick = () => {
-        console.log(day);
         setChoseTime(true);
     };
 
     useEffect(() => {
+        console.log(datum);
         axios.get("http://localhost:3000/time").then((res) => {
             setTimeData(res.data.data.time);
         });
@@ -47,7 +53,9 @@ const Search = () => {
 
     return (
         <div className='container'>
-        <h1 className="log text-center display-3 font-weight-bold">épices</h1>
+            <h1 className='log text-center display-3 font-weight-bold'>
+                épices
+            </h1>
             {showForm ? (
                 <SubmitForm time={time} day={day} />
             ) : choseTime ? (
@@ -62,10 +70,12 @@ const Search = () => {
                                           className='btn btn-primary btn-lg mr-4'
                                           disabled={
                                               timeNow >
-                                              Number(
-                                                  timeInfo.clock.slice(0, 2)
-                                              ) -
-                                                  1
+                                                  Number(
+                                                      timeInfo.clock.slice(0, 2)
+                                                  ) -
+                                                      1 && datum === day
+                                                  ? true
+                                                  : false
                                           }
                                           onClick={() => {
                                               setTime(timeInfo);
@@ -122,6 +132,7 @@ const Search = () => {
                         <input
                             className='form-control '
                             type='date'
+                            min={datum}
                             id='date-input'
                             onChange={(e) => {
                                 setDay(e.target.value);
