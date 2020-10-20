@@ -24,22 +24,20 @@ export default function Home() {
             <h1 className="log text-center display-3 font-weight-bold">épices</h1>
             <h5 onClick={() => navigate("/search")} className="reservation text-center border border-warning reservation rounded">MAKE RESERVATION</h5>
             <div className='info success badge-dark rounded p-3 '>
-                <h3>{datum}</h3>
+                <h3 className="font-weight-bold"><span className="text-warning font-weight-bold">today </span>{datum}</h3>
                 {timeNow <= 17 && (
                     <p className='text-warning'>
-                        vi har fortfarande {left18} lediga bord kvar att boka
-                        till idag kl 18:00!!!
+                    we still have {left18} tables available for today at 18:00 !!!
                     </p>
                 )}
                 {timeNow < 21 && (
                     <p className='text-warning'>
-                        vi har fortfarande {left21} lediga bord kvar att boka
-                        till idag kl 21:00!!!
+                    we still have {left21} tables available for today at 21:00 !!!
                     </p>
                 )}
                 {timeNow >= 21 && (
                     <p className='text-warning'>
-                        Tyvärr vi har inga lediga bord för kväll !!!
+                    sorry, no tables available for the evening !!!
                     </p>
                 )}
                 
