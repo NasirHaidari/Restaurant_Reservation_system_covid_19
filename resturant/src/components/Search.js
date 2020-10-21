@@ -88,7 +88,7 @@ const Search = () => {
                             : ""}
                     </div>
 
-                    {timeNow >= 21 ? (
+                    {timeNow >= 21 && datum === day ? (
                         <p className='alert alert-warning mt-4'>
                             Please chose another day
                         </p>
