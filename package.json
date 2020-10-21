@@ -26,5 +26,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4",
     "react-query": "^2.23.0"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
